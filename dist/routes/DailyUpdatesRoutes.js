@@ -5,7 +5,6 @@ const mongodbController_1 = require("../controllers/mongodbController");
 const router = express_1.Router();
 router.post('/', function (req, res) {
     try {
-        console.log('Chegou');
         const dailyUpdate = new mongodbController_1.DB.Models.DailyUpdate({
             author: req.body.author,
             date: req.body.date,
@@ -13,15 +12,25 @@ router.post('/', function (req, res) {
         });
         dailyUpdate.save((err) => {
             if (err) {
-                res.status(400).json({ resulst: 'failure' });
+                res.status(400).json({ result: 'failure' });
             }
             else {
-                res.status(200).json({ resulst: 'success' });
+                res.status(200).json({ result: 'success' });
             }
         });
     }
     catch (e) {
-        res.status(400).send(e.message);
+        res.status(400).json({ result: 'failure' });
+    }
+});
+router.get('/', function (req, res) {
+    try {
+        mongodbController_1.DB.Models.DailyUpdate.find((err, results) => {
+            res.status(200).json({ results: results });
+        });
+    }
+    catch (e) {
+        res.status(400).json({ result: 'failure' });
     }
 });
 exports.default = router;

@@ -11,7 +11,6 @@ const port = 3002;
 app.use(cors_1.default());
 app.use(express_1.default.json());
 app.use('/dailyupdate', DailyUpdatesRoutes_1.default);
-app.get('/', (req, res) => res.send('Hello World!'));
 app.listen(port, (err) => {
     if (err) {
         return console.log(err);

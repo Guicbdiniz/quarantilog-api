@@ -1,10 +1,19 @@
 import { connect, connection, Connection } from 'mongoose'
 import { DailyUpdate, DailyUpdateModel } from '../models/DailyUpdate'
 
+/**
+ * All DB's models interface.
+ */
 declare interface IModels {
 	DailyUpdate: DailyUpdateModel
 }
 
+/**
+ * Singleton class representing the connection to the MongoDB.
+ * Usage:
+ * 		Simply use the Models attribute to get the model to be used.
+ * 		The model contains all the methods to act over the DB's documents.
+ */
 export class DB {
 	private static instance: DB
 
@@ -26,6 +35,9 @@ export class DB {
 		}
 	}
 
+	/**
+	 * Get all the DB related models.
+	 */
 	public static get Models() {
 		if (!DB.instance) {
 			DB.instance = new DB()
@@ -34,10 +46,18 @@ export class DB {
 		return DB.instance._models
 	}
 
+	/**
+	 * Print a connection message to the console.
+	 */
 	private showConnectedMessage() {
 		console.log('Mongoose has connected')
 	}
 
+	/**
+	 * Print a connection error to the console.
+	 *
+	 * @param error - error message.
+	 */
 	private showErrorMessage(error: any) {
 		console.log('Mongose has errored\n', error)
 	}
