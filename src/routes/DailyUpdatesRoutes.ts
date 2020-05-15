@@ -43,10 +43,19 @@ router.post('/', function (req, res) {
  */
 router.post('/search/', function (req, res) {
 	try {
-		DB.Models.DailyUpdate.find({ date: req.body.date }).then((dailyUpdates) => {
-			res.status(200).json(dailyUpdates)
-		})
+		if (req.body.date) {
+			DB.Models.DailyUpdate.find({ date: req.body.date }).then(
+				(dailyUpdates) => {
+					res.status(200).json(dailyUpdates)
+				}
+			)
+		} else {
+			DB.Models.DailyUpdate.find((err, results) => {
+				res.status(200).json({ results: results })
+			})
+		}
 	} catch (e) {
+		console.log(req)
 		res.status(400).json({ result: 'failure' })
 	}
 })
