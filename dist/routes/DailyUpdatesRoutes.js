@@ -3,6 +3,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const mongodbController_1 = require("../controllers/mongodbController");
 const router = express_1.Router();
+/**
+ * POST endpoint to the DailyUpdate route.
+ * It is used to create a new DailyUpdate document from the DailyUpdate model.
+ * Resquest params:
+ * 		author: String -> the DailyUpdate author.
+ * 		date: String -> the DailyUpdate creation date.
+ * 		message: String -> the DailyUpdate message.
+ * JSON reponse format:
+ * 		result: String -> message telling if the request worked as planned.
+ */
 router.post('/', function (req, res) {
     try {
         const dailyUpdate = new mongodbController_1.DB.Models.DailyUpdate({
@@ -23,6 +33,30 @@ router.post('/', function (req, res) {
         res.status(400).json({ result: 'failure' });
     }
 });
+/**
+ * POST endpoint to the DailyUpdate route.
+ * It is used to get all the DailyUpdates with the date as searched.
+ * It uses the DailyUpdate model.
+ * JSON response format:
+ *    Array<DailyUpdate>
+ */
+router.post('/search/', function (req, res) {
+    try {
+        mongodbController_1.DB.Models.DailyUpdate.find({ date: req.body.date }).then((dailyUpdates) => {
+            res.status(200).json(dailyUpdates);
+        });
+    }
+    catch (e) {
+        res.status(400).json({ result: 'failure' });
+    }
+});
+/**
+ * GET endpoint to the DailyUpdate route.
+ * It is used to get all the DailyUpdates documents saved in the MongoDB.
+ * It uses the DailyUpdate model.
+ * JSON response format:
+ * 		results: List -> list of all DailyUpdates documents.
+ */
 router.get('/', function (req, res) {
     try {
         mongodbController_1.DB.Models.DailyUpdate.find((err, results) => {
