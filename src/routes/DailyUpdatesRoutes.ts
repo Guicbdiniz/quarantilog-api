@@ -1,5 +1,6 @@
 import { Router, Request } from 'express'
 import { DB } from '../controllers/mongodbController'
+import { DailyUpdate } from '../models/DailyUpdate'
 
 const router = Router()
 
@@ -29,6 +30,32 @@ router.post('/', function (req, res) {
 			}
 		})
 	} catch (e) {
+		res.status(400).json({ result: 'failure' })
+	}
+})
+
+/**
+ * POST endpoint to the DailyUpdate route.
+ * It is used to get all the DailyUpdates with the date as searched.
+ * It uses the DailyUpdate model.
+ * JSON response format:
+ *    Array<DailyUpdate>
+ */
+router.post('/search/', function (req, res) {
+	try {
+		if (req.body.date) {
+			DB.Models.DailyUpdate.find({ date: req.body.date }).then(
+				(dailyUpdates) => {
+					res.status(200).json(dailyUpdates)
+				}
+			)
+		} else {
+			DB.Models.DailyUpdate.find((err, results) => {
+				res.status(200).json({ results: results })
+			})
+		}
+	} catch (e) {
+		console.log(req)
 		res.status(400).json({ result: 'failure' })
 	}
 })

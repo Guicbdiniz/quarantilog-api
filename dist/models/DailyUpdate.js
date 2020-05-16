@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+/**
+ * Daily Update Class.
+ * It represents a MongoDB collection (as every Schema does).
+ */
 class DailyUpdate {
     constructor() {
         const schema = new mongoose_1.Schema({
@@ -10,6 +14,9 @@ class DailyUpdate {
         });
         this._model = mongoose_1.model('DailyUpdate', schema);
     }
+    /**
+     * Gets the DailyUpdate model.
+     */
     get model() {
         return this._model;
     }
